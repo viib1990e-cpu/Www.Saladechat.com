@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sala de Chat y Cine - Javiib</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ================= PANTALLA DE LOGIN ================= */
+    .login-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, #1e293b 0%, #0f172a 70%, #020617 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 24px;
+    }
+
+    .login-dots {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .login-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 350px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .login-avatar-square {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid rgba(255, 213, 115, 0.4);
+    }
+
+    .login-avatar-square img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .login-avatar-square i.fa-user {
+      font-size: 38px;
+      color: #ffd573;
+    }
+
+    .login-avatar-badge {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #ff4081, #c51162);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      border: 2px solid #0f172a;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #ffffff;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    .login-input-group {
+      width: 100%;
+      height: 50px;
+      background-color: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .login-input-icon {
+      width: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #29b6f6;
+      font-size: 15px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      padding-right: 10px;
+      margin-right: 10px;
+    }
+
+    .login-input-group input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      color: #ffffff;
+      background: transparent;
+    }
+
+    .login-input-group input::placeholder {
+      color: #64748b;
+    }
+
+    .login-input-group input.shiny-bio-input,
+    input.shiny-bio-input {
+      font-weight: 700;
+      color: #ffab40 !important;
+      -webkit-text-fill-color: #ffab40 !important;
+      background: transparent !important;
+    }
+
+    .login-submit-btn {
+      width: 100%;
+      height: 50px;
+      background: linear-gradient(135deg, #29b6f6, #0288d1);
+      color: #ffffff;
+      border: none;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 8px 20px rgba(41, 182, 246, 0.35);
+    }
+
+    .login-footer-links {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 22px;
+      font-size: 12.5px;
+      color: #94a3b8;
+    }
+
+    .remember-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .remember-check {
+      width: 15px;
+      height: 15px;
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #29b6f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* ================= SALA DE CHAT Y CINE ================= */
+    .room-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(135, 18, 18, 0.45), transparent 70%),
+        linear-gradient(180deg, #540909 0%, #6b0d0d 50%, #4d0707 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .top-bar {
+      height: 50px;
+      background-color: #161819;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      z-index: 10;
+    }
+
+    /* TIRA DE AVATARES DE USUARIOS CONECTADOS ARRIBA A LA IZQUIERDA */
+    .top-left-avatars-strip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 60%;
+      overflow-x: auto;
+      padding: 4px 0;
+    }
+    .top-left-avatars-strip::-webkit-scrollbar { display: none; }
+
+    .top-mini-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid #ffd573;
+      background: linear-gradient(180deg, #3c536e 0%, #243548 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+    .top-mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .top-mini-avatar i { font-size: 15px; color: #ffffff; }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .icon-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #222526;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+    }
+
+    .icon-circle.users-btn {
+      background-color: #143628;
+      border: 1px solid #1e5940;
+      color: #2ce68a;
+    }
+
+    .badge-count {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background-color: #2ce68a;
+      color: #082416;
+      font-size: 9px;
+      font-weight: 800;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: #16181b;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      width: 250px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      z-index: 100;
+      overflow: hidden;
+    }
+
+    .dropdown-menu.show { display: flex; }
+
+    .dropdown-item {
+      padding: 12px 16px;
+      font-size: 13.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .video-wrapper { padding: 12px 14px 8px; }
+
+    .video-screen {
+      width: 100%;
+      height: 195px;
+      background-color: #240404;
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .video-screen iframe { width: 100%; height: 100%; border: none; display: none; }
+    .projector-icon { font-size: 46px; color: #635353; opacity: 0.85; }
+
+    .yt-search-pill {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background-color: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 3px 10px 3px 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      z-index: 5;
+    }
+
+    .yt-search-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #29b6f6;
+      color: #0b1921;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .yt-search-pill span { font-size: 11px; color: #f2eded; font-weight: 500; }
+
+    /* ================= REPRODUCTOR MP3 FLOTANTE Y ARRASTRABLE ================= */
+    .floating-mp3-player {
+      position: absolute;
+      top: 115px;
+      left: 14px;
+      width: 280px;
+      background: linear-gradient(135deg, rgba(24, 18, 20, 0.98), rgba(12, 10, 13, 0.98));
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255, 213, 115, 0.5);
+      border-radius: 14px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.85);
+      z-index: 40;
+      display: none;
+      overflow: hidden;
+      touch-action: none;
+      cursor: grab;
+    }
+    .floating-mp3-player:active { cursor: grabbing; }
+
+    .floating-mp3-player.minimized {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 50% !important;
+      border: 2px solid #ffd573;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(255, 213, 115, 0.8);
+      animation: pulseGlow 1.5s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 10px rgba(255, 213, 115, 0.5); transform: scale(1); }
+      100% { box-shadow: 0 0 25px rgba(255, 213, 115, 1); transform: scale(1.05); }
+    }
+
+    .floating-mp3-player.minimized .mp3-pro-body,
+    .floating-mp3-player.minimized .mp3-drag-header span { display: none; }
+
+    .floating-mp3-player.minimized .mp3-drag-header {
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff4081, #d500f9);
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .floating-mp3-player.minimized .mp3-drag-header::after {
+      content: "\f001";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .mp3-drag-header {
+      background: linear-gradient(90deg, #6b0d0d, #9e2828);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #ffd573;
+    }
+
+    .mp3-pro-body {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mp3-track-info-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .mp3-disc-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd573, #ff8f00);
+      color: #121212;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      animation: spinDisc 6s linear infinite;
+    }
+
+    @keyframes spinDisc {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .mp3-track-details { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .mp3-track-title-full { font-size: 12px; font-weight: 700; color: #ffd573; word-break: break-word; }
+    .mp3-status-dj { font-size: 10px; color: #2ce68a; margin-top: 1px; }
+
+    .mp3-controls-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+    .mp3-main-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #29b6f6, #0288d1);
+      color: #fff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .mp3-time-progress-container { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+    .mp3-seek-bar { width: 100%; height: 5px; appearance: none; background: rgba(255, 255, 255, 0.15); border-radius: 3px; outline: none; }
+    .mp3-time-display { display: flex; justify-content: space-between; font-size: 10px; color: #b0bec5; }
+
+    .delete-drop-zone {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: rgba(229, 57, 53, 0.92);
+      color: #fff;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-weight: 800;
+      font-size: 14px;
+      z-index: 45;
+      border-top: 2px dashed #ffd573;
+      transition: background 0.2s;
+    }
+    .delete-drop-zone.active { display: flex; background: rgba(255, 23, 68, 0.98); box-shadow: 0 -5px 25px rgba(255, 23, 68, 0.8); }
+
+    .seats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px 8px;
+      padding: 6px 14px;
+    }
+
+    .seat-card {
+      position: relative;
+      height: 92px;
+      background: linear-gradient(180deg, #9e2828 0%, #6e1414 75%, #4a0a0a 100%);
+      border-radius: 14px 14px 8px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 8px;
+      cursor: pointer;
+    }
+
+    .seat-ring {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2.5px solid #ffd573;
+      background: radial-gradient(circle, #591010 40%, #3b0808 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .seat-ring img { width: 100%; height: 100%; object-fit: cover; }
+    .seat-ring i { font-size: 22px; color: #ffe89e; }
+
+    .shiny-animated {
+      background: linear-gradient(45deg, #00e676, #ff1744, #ffea00, #00e676, #ff1744);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineMove 3s linear infinite;
+      font-weight: 800;
+    }
+
+    @keyframes shineMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .shiny-celeste-animated {
+      background: linear-gradient(90deg, #b3e5fc, #00e5ff, #80d8ff, #e0f7fa, #b3e5fc);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineCelesteMove 3s linear infinite;
+      font-weight: 700;
+    }
+
+    @keyframes shineCelesteMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .typing-bar {
+      padding: 4px 16px;
+      font-size: 11.5px;
+      color: #2ce68a;
+      font-style: italic;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.35);
+      border-top: 1px solid rgba(44, 230, 138, 0.2);
+    }
+
+    .seat-base {
+      width: 100%;
+      height: 18px;
+      background: linear-gradient(180deg, #a63232 0%, #6e1616 100%);
+      border-radius: 4px 4px 8px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255, 230, 230, 0.95);
+      z-index: 2;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .msg-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      max-width: 85%;
+      width: fit-content;
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .msg-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1.5px solid #d49b4b;
+      background: linear-gradient(180deg, #3c536e 0%, #243548 100%);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .msg-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .msg-avatar i { color: #ffffff; font-size: 15px; margin-top: 2px; }
+
+    .msg-bubble {
+      background: linear-gradient(135deg, rgba(35, 24, 26, 0.95), rgba(22, 15, 17, 0.95));
+      border: 1px solid rgba(255, 213, 115, 0.25);
+      border-radius: 4px 16px 16px 16px;
+      padding: 8px 12px;
+      font-size: 13.5px;
+      line-height: 1.35;
+    }
+
+    .msg-bubble img { max-width: 100%; max-height: 180px; border-radius: 10px; margin-top: 4px; cursor: pointer; }
+    .msg-bubble audio { width: 220px; height: 36px; margin-top: 4px; }
+    .msg-author { font-weight: 800; font-size: 13px; margin-bottom: 2px; }
+
+    .msg-system {
+      background-color: rgba(255, 207, 110, 0.15);
+      color: #ffe3a8;
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 12px;
+      align-self: center;
+      text-align: center;
+    }
+
+    .msg-clear {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(41, 182, 246, 0.3);
+      color: #b3e5fc;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 14px;
+      align-self: center;
+      text-align: center;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    .bottom-input-bar {
+      height: 62px;
+      background-color: #161819;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .mic-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: #252829;
+      color: #ffffff;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .mic-btn.recording { background-color: #e53935; animation: pulse 1s infinite; }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    .input-box {
+      flex: 1;
+      height: 42px;
+      background-color: #252829;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0 16px;
+      color: #ffffff;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: #29b6f6;
+      color: #0b1921;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: #1e2022;
+      border-radius: 14px;
+      padding: 18px;
+      width: 100%;
+      max-width: 340px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-card h3 { font-size: 16px; margin-bottom: 8px; color: #ffcf6e; }
+    .modal-card p { font-size: 12px; color: #aaa; margin-bottom: 10px; }
+    .modal-card input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #3a3d40; background: #141517; color: #fff; margin-bottom: 12px; outline: none; }
+
+    .modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .modal-actions button { padding: 8px 14px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; }
+    .btn-cancel { background: #333; color: #ccc; }
+    .btn-confirm { background: #29b6f6; color: #0b1921; }
+
+    .bg-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .bg-thumb {
+      height: 65px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* ================= TARJETA DE PERFIL ================= */
+    .profile-modal-card {
+      background: transparent;
+      border: none;
+      border-radius: 22px;
+      padding: 0;
+      width: 100%;
+      max-width: 340px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-top-banner-exact {
+      width: 100%;
+      height: 300px;
+      background: #1a1a1a;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      border-radius: 0;
+    }
+
+    .profile-top-banner-exact img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-top-banner-exact i.fa-user { font-size: 55px; color: #666; }
+
+    .profile-add-photo-btn-exact {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 34px;
+      height: 34px;
+      background: rgba(0, 0, 0, 0.7);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+    }
+
+    .profile-bottom-white-panel {
+      background: #ffffff;
+      border-radius: 0;
+      padding: 12px 16px 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .profile-cp-row-exact {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 4px 8px;
+      margin-top: -34px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .profile-cp-avatar-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 3px solid #ff4d6d;
+      overflow: hidden;
+      background: #4a4a68;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    .profile-cp-avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-cp-avatar-box i { font-size: 22px; color: #888; }
+
+    .profile-cp-badge-center {
+      background: transparent;
+      color: #00e5ff;
+      -webkit-text-stroke: 2px #ff2d95;
+      font-weight: 900;
+      font-size: 26px;
+      padding: 0 2px;
+      border: none;
+      letter-spacing: 0;
+      text-shadow: 2px 2px 0 #ff2d95;
+      font-style: italic;
+    }
+
+    .profile-bottom-info-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 4px 0 2px;
+    }
+
+    .profile-left-texts { display: flex; flex-direction: column; gap: 4px; }
+    
+    .profile-name-exact {
+      font-size: 22px;
+      font-weight: 900;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffb300, #ff5252, #e040fb, #448aff, #00e676);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300% 100%;
+      animation: shineMove 4s linear infinite;
+    }
+
+    .profile-bio-exact {
+      font-size: 17px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffb300, #ff5252, #e040fb, #448aff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300% 100%;
+      animation: shineMove 4s linear infinite;
+      border: none;
+      text-align: left;
+      outline: none;
+      text-transform: uppercase;
+    }
+
+    .profile-bio-audio-exact {
+      font-size: 16px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(90deg, #00e5ff, #448aff, #e040fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 300% 100%;
+      animation: shineMove 4s linear infinite;
+      text-transform: uppercase;
+    }
+
+    .profile-right-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+
+    .mini-pill-btn {
+      padding: 4px 12px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 800;
+      font-size: 11px;
+      color: #ffffff;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: transform 0.15s ease;
+    }
+    .mini-pill-btn:active { transform: scale(0.93); }
+    .mini-pill-btn.celeste {
+      background: linear-gradient(135deg, #29b6f6, #0288d1);
+      box-shadow: 0 3px 8px rgba(41, 182, 246, 0.35);
+    }
+    .mini-pill-btn.rosado {
+      background: linear-gradient(135deg, #ff4081, #c51162);
+      box-shadow: 0 3px 8px rgba(255, 64, 129, 0.35);
+    }
+
+    /* PANEL INFERIOR: USUARIOS EN LÍNEA */
+    .online-sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      flex-direction: column;
+      justify-content: flex-end;
+      z-index: 75;
+    }
+    .online-sheet-overlay.show { display: flex; }
+
+    .online-sheet-card {
+      background: #16181b;
+      color: #ffffff;
+      border-radius: 22px 22px 0 0;
+      width: 100%;
+      max-height: 74dvh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+      border-top: 1px solid rgba(255, 213, 115, 0.3);
+    }
+
+    .online-sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .online-tabs { display: flex; align-items: center; gap: 22px; }
+    .online-tab { font-size: 15px; font-weight: 700; color: #8b9094; cursor: pointer; position: relative; padding-bottom: 6px; }
+    .online-tab.active { color: #ffd573; }
+
+    .online-sheet-close { background: none; border: none; color: #8b9094; font-size: 18px; cursor: pointer; }
+    .online-sheet-list { flex: 1; overflow-y: auto; padding: 10px 14px 20px; display: flex; flex-direction: column; gap: 10px; }
+
+    .online-user-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #9e2828 0%, #6e1414 75%, #4a0a0a 100%);
+      border: 1px solid rgba(255, 213, 115, 0.35);
+    }
+
+    .online-user-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; cursor: pointer; }
+    .online-avatar-wrap { position: relative; width: 48px; height: 48px; flex-shrink: 0; }
+    .online-avatar-circle { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: #3b0808; display: flex; align-items: center; justify-content: center; border: 2px solid #ffd573; }
+    .online-avatar-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .online-avatar-circle i { color: #ffd573; font-size: 20px; }
+    .online-user-details { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .online-name-line { font-size: 14.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ff5252; }
+
+    .badge-vip-gold {
+      background: linear-gradient(90deg, #523b18, #785522);
+      color: #fde68a;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .welcome-banner {
+      align-self: center;
+      width: 100%;
+      max-width: 400px;
+      margin: 4px auto 2px;
+      padding: 8px 14px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 213, 115, 0.4);
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffe9b0;
+      font-style: italic;
+    }
+    .welcome-banner .welcome-user { font-weight: 800; color: #ffd54f; }
+
+    .image-viewer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+    .image-viewer-overlay img {
+      max-width: 95%;
+      max-height: 90dvh;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA DE LOGIN -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-dots"><span></span><span></span><span></span></div>
+
+    <div class="login-box">
+      <div class="login-avatar-square" id="loginAvatarBox" onclick="triggerLoginPhotoUpload()" title="Subir foto de perfil">
+        <i class="fa-solid fa-user"></i>
+        <div class="login-avatar-badge" title="Subir foto"><i class="fa-solid fa-camera"></i></div>
+      </div>
+      <h1 class="login-title">LOGIN</h1>
+
+      <div class="login-input-group">
+        <div class="login-input-icon"><i class="fa-solid fa-user"></i></div>
+        <input type="text" id="loginUserInput" class="shiny-bio-input" placeholder="Tu nombre de usuario" autocomplete="off" value="" />
+      </div>
+
+      <div class="login-input-group">
+        <div class="login-input-icon"><i class="fa-solid fa-address-card"></i></div>
+        <input type="text" id="loginBioInput" class="shiny-bio-input" placeholder="Tu biografía..." autocomplete="off" value="" />
+      </div>
+
+      <button class="login-submit-btn" onclick="handleLogin()">LOGIN</button>
+
+      <div class="login-footer-links">
+        <label class="remember-label" onclick="toggleRemember()">
+          <span class="remember-check" id="rememberIcon"><i class="fa-solid fa-check"></i></span>
+          <span>Remember Me</span>
+        </label>
+        <span class="forgot-link" onclick="alert('Acceso libre sin contraseña.')">Sala Pública</span>
+      </div>
+    </div>
+  </div>
+
+  <input type="file" id="profileImageInput" accept="image/*" style="display:none;" onchange="handleProfileImageUpload(event)">
+  <input type="file" id="loginImageInput" accept="image/*" style="display:none;" onchange="handleLoginImageUpload(event)">
+  <input type="file" id="chatImageInput" accept="image/*" style="display:none;" onchange="handleChatImageUpload(event)">
+  <input type="file" id="musicGalleryInput" accept="audio/*" multiple style="display:none;" onchange="handleMusicUpload(event)">
+  <input type="file" id="customBgInput" accept="image/*" style="display:none;" onchange="handleCustomBgUpload(event)">
+
+  <div class="image-viewer-overlay" id="imageViewer" onclick="closeImageViewer()">
+    <img id="fullImageView" src="" alt="">
+  </div>
+
+  <!-- SALA DE CHAT Y CINE -->
+  <div class="room-container" id="roomContainer">
+    <header class="top-bar">
+      <!-- TIRA DE AVATARES DE USUARIOS CONECTADOS ARRIBA A LA IZQUIERDA -->
+      <div class="top-left-avatars-strip" id="topLeftAvatarsStrip" title="Usuarios en sala">
+        <div class="top-mini-avatar" onclick="openProfileModal()">
+          <i class="fa-solid fa-user"></i>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="icon-circle users-btn" title="Usuarios en sala" onclick="openConnectedModal()">
+          <i class="fa-solid fa-user-group"></i>
+          <span class="badge-count" id="onlineCount">1</span>
+        </div>
+        <div class="icon-circle" title="Opciones" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </div>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+          <div class="dropdown-item" style="color: #2ce68a;" onclick="openConnectedModal(); closeDropdown();">
+            <i class="fa-solid fa-user-group"></i> Conectados: <span id="menuCount">1</span>
+          </div>
+          <div class="dropdown-item" style="color: #2ce68a;" onclick="openProfileModal(); closeDropdown();">
+            <i class="fa-solid fa-user-pen"></i> Editar Mi Perfil
+          </div>
+          <div class="dropdown-item" style="color: #29b6f6;" onclick="toggleSeat(1); closeDropdown();">
+            <i class="fa-solid fa-couch"></i> Sentarme en VIP (Sillita)
+          </div>
+          <div class="dropdown-item" style="color: #ab47bc;" onclick="openBgModal(); closeDropdown();">
+            <i class="fa-solid fa-cloud"></i> Cambiar Fondo (Mi Nube)
+          </div>
+          <div class="dropdown-item" style="color: #66bb6a;" onclick="triggerChatImageUpload()">
+            <i class="fa-solid fa-image"></i> Galería (Enviar Foto)
+          </div>
+          <div class="dropdown-item" style="color: #29b6f6;" onclick="triggerMusicGallery(); closeDropdown();">
+            <i class="fa-solid fa-music"></i> Subir Música (Sala)
+          </div>
+          <div class="dropdown-item" style="color: #e53935;" onclick="closeMp3Player(); closeDropdown();">
+            <i class="fa-solid fa-circle-stop"></i> Detener Música MP3
+          </div>
+          <div class="dropdown-item" style="color: #ffca28;" onclick="clearSeats(); closeDropdown();">
+            <i class="fa-solid fa-user-slash"></i> Vaciar Recinto Asientos
+          </div>
+          <div class="dropdown-item" style="color: #ff7043;" onclick="clearChat(); closeDropdown();">
+            <i class="fa-solid fa-trash-can"></i> Eliminar Historial Chat
+          </div>
+          <div class="dropdown-item" style="color: #e53935;" onclick="logoutRoom(); closeDropdown();">
+            <i class="fa-solid fa-right-from-bracket"></i> Salir de la Sala
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- REPRODUCTOR MP3 FLOTANTE Y ARRASTRABLE -->
+    <div class="floating-mp3-player" id="floatingMp3" onclick="handleMp3ContainerClick(event)">
+      <div class="mp3-drag-header" id="mp3DragHandle">
+        <span><i class="fa-solid fa-compact-disc"></i> Reproductor Sala</span>
+        <i class="fa-solid fa-xmark" onclick="event.stopPropagation(); toggleMinimizeMp3()" style="cursor:pointer; font-size: 14px; padding: 2px;" title="Minimizar / Restaurar"></i>
+      </div>
+      <div class="mp3-pro-body" onclick="event.stopPropagation()">
+        <div class="mp3-track-info-box">
+          <div class="mp3-disc-icon"><i class="fa-solid fa-music"></i></div>
+          <div class="mp3-track-details">
+            <div class="mp3-track-title-full" id="mp3TrackName">Esperando pista de audio...</div>
+            <div class="mp3-status-dj" id="mp3StatusDj">🔊 Sincronizado</div>
+          </div>
+        </div>
+
+        <div class="mp3-controls-row">
+          <button class="mp3-main-btn" id="mp3PlayPauseBtn" onclick="togglePlayPauseRemote()" title="Reproducir / Pausa">
+            <i class="fa-solid fa-play" id="mp3PlayIcon"></i>
+          </button>
+          
+          <div class="mp3-time-progress-container">
+            <input type="range" class="mp3-seek-bar" id="mp3SeekBar" value="0" min="0" max="100" oninput="seekAudioRemote(this.value)" />
+            <div class="mp3-time-display">
+              <span id="mp3CurrentTime">00:00</span>
+              <span id="mp3TotalDuration">00:00</span>
+            </div>
+          </div>
+        </div>
+
+        <audio id="audioPlayer" style="display:none;"></audio>
+      </div>
+    </div>
+
+    <div class="delete-drop-zone" id="deleteDropZone">
+      <i class="fa-solid fa-trash-can fa-shake" style="font-size: 22px;"></i>
+      <span>¡Soltar aquí para cerrar reproductor!</span>
+    </div>
+
+    <section class="video-wrapper">
+      <div class="video-screen" id="videoScreen" onclick="openYtModal()">
+        <i class="fa-solid fa-video projector-icon" id="projectorPlaceholder"></i>
+        <iframe id="ytPlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+        <div class="yt-search-pill" id="searchPill" onclick="event.stopPropagation(); openYtModal()">
+          <div class="yt-search-circle"><i class="fa-solid fa-magnifying-glass"></i></div>
+          <span>Buscar enlace...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recinto de Butacas -->
+    <section class="seats-grid" id="seatsGrid"></section>
+
+    <main class="chat-messages" id="chatMessages">
+      <div class="msg-system">Bienvenido a la sala. Toca una butaca para subir.</div>
+    </main>
+
+    <!-- BARRA ESCRIBIENDO EN TIEMPO REAL -->
+    <div class="typing-bar" id="typingBar">
+      <i class="fa-solid fa-pen-nib fa-bounce" style="color: #2ce68a;"></i>
+      <span class="shiny-animated" id="typingUserName">Alguien</span> está escribiendo...
+    </div>
+
+    <footer class="bottom-input-bar">
+      <button class="mic-btn" id="micBtn" onclick="toggleMic()" title="Grabar Nota de Voz">
+        <i class="fa-solid fa-microphone"></i>
+      </button>
+      <input
+        type="text"
+        class="input-box"
+        id="msgInput"
+        placeholder="Escribe algo..."
+        oninput="handleTypingInput()"
+        onkeypress="if(event.key==='Enter') sendMessage()"
+      />
+      <button class="send-btn" onclick="sendMessage()" title="Enviar">
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </footer>
+  </div>
+
+  <div class="modal-overlay" id="bgModal">
+    <div class="modal-card">
+      <h3>Seleccionar Fondo (Mi Nube)</h3>
+      <p>Elige uno de los fondos bonitos o sube una foto desde tu galería.</p>
+      <div class="bg-grid">
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #540909, #6b0d0d);" onclick="setPresetBg('gradient-red')">Cine Clásico</div>
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #0d1b2a, #1b263b);" onclick="setPresetBg('gradient-night')">Noche Azul</div>
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #240046, #3c096c);" onclick="setPresetBg('gradient-purple')">Nebulosa Púrpura</div>
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #03045e, #0077b6);" onclick="setPresetBg('gradient-ocean')">Océano Profundo</div>
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #2b091e, #7209b7);" onclick="setPresetBg('gradient-pink')">Neón Fucsia</div>
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #132a13, #31572c);" onclick="setPresetBg('gradient-forest')">Bosque Oscuro</div>
+        <div class="bg-thumb" style="background: linear-gradient(135deg, #370617, #d90429);" onclick="setPresetBg('gradient-sunset')">Atardecer Fuego</div>
+        <div class="bg-thumb" style="background: #111; border: 1px dashed #ff4081;" onclick="triggerCustomBgUpload()"><i class="fa-solid fa-image"></i> Subir de Galería</div>
+      </div>
+      <div class="modal-actions" style="margin-top: 10px;">
+        <button class="btn-cancel" onclick="closeBgModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PERFIL PRINCIPAL -->
+  <div class="modal-overlay" id="profileModal">
+    <div class="profile-modal-card">
+      <div class="profile-top-banner-exact" id="profileBannerBox" onclick="triggerProfileEdit()" title="Cambiar foto de perfil">
+        <i class="fa-solid fa-user"></i>
+        <div class="profile-add-photo-btn-exact" title="Subir desde galería">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </div>
+
+      <div class="profile-bottom-white-panel">
+        <div class="profile-cp-row-exact">
+          <div class="profile-cp-avatar-box" id="coupleAvatarBox"><i class="fa-solid fa-user"></i></div>
+          <div class="profile-cp-badge-center">CP</div>
+          <div class="profile-cp-avatar-box" id="cpPartnerAvatarBox"><i class="fa-solid fa-user" style="color:#555;"></i></div>
+        </div>
+
+        <div class="profile-bottom-info-grid">
+          <div class="profile-left-texts">
+            <div class="profile-name-exact" id="profileModalName">JaviiB</div>
+            <input type="text" class="profile-bio-exact" id="userBioInput" value="BIOGRAFÍA" placeholder="BIOGRAFÍA..." />
+            <div class="profile-bio-audio-exact" onclick="openAudioRecorderModal()">
+              <i class="fa-solid fa-volume-high"></i> <span id="bioAudioLabel">BIOGRAFÍA AUDIO</span>
+            </div>
+          </div>
+          <div class="profile-right-actions">
+            <button class="mini-pill-btn celeste" onclick="toggleSeat(1); closeProfileModal();"><i class="fa-solid fa-couch"></i> SUBIR</button>
+            <button class="mini-pill-btn rosado" onclick="clearSeats(); closeProfileModal();"><i class="fa-solid fa-arrow-down"></i> BAJAR</button>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px; border-top: 1px solid #e5e5e5; padding-top: 8px; display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:11px; color:#777;" id="nivelInfoText">Nivel 0 (Faltan mensajes para Nivel 1)</span>
+          <button class="btn-cancel" style="padding: 5px 14px; font-size:12px; border-radius:8px;" onclick="closeProfileModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL GRABADOR DE BIOGRAFÍA AUDIO -->
+  <div class="modal-overlay" id="audioRecorderModal">
+    <div class="audio-rec-modal">
+      <h3 style="color:#29b6f6;"><i class="fa-solid fa-microphone"></i> Grabar Biografía (30s máx)</h3>
+      <div class="audio-rec-circle" id="recCircleBtn" onclick="toggleRecordBioAudio()">
+        <i class="fa-solid fa-microphone"></i>
+      </div>
+      <div id="recTimerText" style="font-size: 15px; font-weight: 700; color: #ffd573;">00:00 / 00:30</div>
+      <p id="recStatusText" style="font-size: 12px; color: #aaa;">Toca el micrófono para comenzar a grabar.</p>
+      <div class="modal-actions" style="width:100%; justify-content: space-between; margin-top: 10px;">
+        <button class="btn-cancel" onclick="closeAudioRecorderModal()">Cancelar</button>
+        <button class="btn-confirm" id="saveAudioBioBtn" style="display:none;" onclick="saveBioAudioRecording()">Guardar Audio</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL VER PERFIL DE OTRO USUARIO -->
+  <div class="modal-overlay" id="viewUserModal" onclick="closeViewUserModal()">
+    <div class="profile-modal-card" onclick="event.stopPropagation()">
+      <div class="profile-top-banner-exact" id="viewUserBannerBox">
+        <i class="fa-solid fa-user"></i>
+      </div>
+      <div class="profile-bottom-white-panel">
+        <div class="profile-cp-row-exact">
+          <div class="profile-cp-avatar-box" id="viewUserCoupleBox"><i class="fa-solid fa-user"></i></div>
+          <div class="profile-cp-badge-center">CP</div>
+          <div class="profile-cp-avatar-box"><i class="fa-solid fa-user" style="color:#555;"></i></div>
+        </div>
+        <div class="profile-bottom-info-grid">
+          <div class="profile-left-texts">
+            <div class="profile-name-exact" id="viewUserName">Usuario</div>
+            <div class="profile-bio-exact" id="viewUserBio">Sin biografía</div>
+          </div>
+          <div class="profile-right-actions">
+            <button class="mini-pill-btn celeste" id="viewUserSubirAsientoBtn"><i class="fa-solid fa-couch"></i> SUBIR</button>
+            <button class="mini-pill-btn rosado" id="viewUserBajarAsientoBtn"><i class="fa-solid fa-arrow-down"></i> BAJAR</button>
+          </div>
+        </div>
+        <div style="margin-top: 10px; border-top: 1px solid #e5e5e5; padding-top: 6px; text-align:right;">
+          <button class="btn-cancel" style="padding: 5px 14px; font-size:12px; border-radius:8px;" onclick="closeViewUserModal()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="ytModal">
+    <div class="modal-card">
+      <h3>Reproducir Vídeo / Redes Sociales</h3>
+      <p>Pega enlaces de YouTube, Facebook, Google o cualquier vídeo directo.</p>
+      <input type="text" id="ytUrlInput" placeholder="https://..." />
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeYtModal()">Cancelar</button>
+        <button class="btn-confirm" onclick="loadVideoUrl()">Reproducir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL INFERIOR: USUARIOS EN LÍNEA -->
+  <div class="online-sheet-overlay" id="connectedModal" onclick="closeConnectedModal()">
+    <div class="online-sheet-card" onclick="event.stopPropagation()">
+      <div class="online-sheet-header">
+        <div class="online-tabs">
+          <div class="online-tab active" id="tabOnlineAll" onclick="switchOnlineTab('all')">En línea (<span id="sheetOnlineCount">1</span>)</div>
+          <div class="online-tab" id="tabOnlineSeats" onclick="switchOnlineTab('seats')">En butacas</div>
+        </div>
+        <button class="online-sheet-close" onclick="closeConnectedModal()" title="Cerrar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="online-sheet-list" id="connectedUsersList"></div>
+    </div>
+  </div>
+
+  <script>
+    const seatsGrid = document.getElementById('seatsGrid');
+    const chatMessages = document.getElementById('chatMessages');
+    const msgInput = document.getElementById('msgInput');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    let mySeat = null;
+    let myAvatarUrl = null;
+    window.remoteSeats = {};
+    let myUsername = "";
+    let myBio = "";
+    let myBioAudioUrl = null;
+    let isRemembered = true;
+    let activeOnlineTab = 'all';
+
+    let myMsgCount = parseInt(localStorage.getItem('vix_msg_count') || '0');
+    let myUserId = localStorage.getItem('vix_user_id');
+    if (!myUserId) {
+      myUserId = String(Math.floor(1000000 + Math.random() * 8999999));
+      localStorage.setItem('vix_user_id', myUserId);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('loginUserInput').value = '';
+      document.getElementById('loginBioInput').value = '';
+
+      const savedAvatar = localStorage.getItem('vix_avatar');
+      const savedAudioBio = localStorage.getItem('vix_bio_audio');
+
+      if (savedAvatar) {
+        myAvatarUrl = savedAvatar;
+        const loginAvatarBox = document.getElementById('loginAvatarBox');
+        loginAvatarBox.innerHTML = `
+          <img src="${myAvatarUrl}" alt="Avatar">
+          <div class="login-avatar-badge" title="Cambiar foto"><i class="fa-solid fa-camera"></i></div>
+        `;
+      }
+      if (savedAudioBio) {
+        myBioAudioUrl = savedAudioBio;
+        document.getElementById('bioAudioLabel').textContent = "REPRODUCIR AUDIO";
+      }
+      actualizarProgresoNivel();
+      initDraggableMp3();
+    });
+
+    function actualizarProgresoNivel() {
+      const faltan = Math.max(0, 5 - myMsgCount);
+      const nivelInfoText = document.getElementById('nivelInfoText');
+      if (myMsgCount >= 5) {
+        nivelInfoText.innerHTML = `<span style="color:#2ce68a; font-weight:700;"><i class="fa-solid fa-shield-halved"></i> Nivel 1 Alcanzado</span>`;
+      } else {
+        nivelInfoText.textContent = `Nivel 0 (Faltan ${faltan} mensajes para Nivel 1)`;
+      }
+    }
+
+    let typingTimeout = null;
+    function handleTypingInput() {
+      if (!myUsername) return;
+      const isTyping = msgInput.value.trim().length > 0;
+      if (window.FB && window.FB.actualizarEscribiendo) {
+        window.FB.actualizarEscribiendo(myUsername, isTyping);
+      }
+      clearTimeout(typingTimeout);
+      if (isTyping) {
+        typingTimeout = setTimeout(() => {
+          if (window.FB && window.FB.actualizarEscribiendo) {
+            window.FB.actualizarEscribiendo(myUsername, false);
+          }
+        }, 3000);
+      }
+    }
+
+    let bioMediaRecorder = null;
+    let bioAudioChunks = [];
+    let isBioRecording = false;
+    let bioRecordTimer = null;
+    let bioSecondsLeft = 30;
+    let recordedBioBlobUrl = null;
+
+    function openAudioRecorderModal() {
+      bioSecondsLeft = 30;
+      document.getElementById('recTimerText').textContent = "00:00 / 00:30";
+      document.getElementById('recStatusText').textContent = "Toca el micrófono para grabar tu biografía de audio.";
+      document.getElementById('saveAudioBioBtn').style.display = 'none';
+      document.getElementById('audioRecorderModal').style.display = 'flex';
+    }
+
+    function closeAudioRecorderModal() {
+      if (isBioRecording && bioMediaRecorder) bioMediaRecorder.stop();
+      clearInterval(bioRecordTimer);
+      isBioRecording = false;
+      document.getElementById('audioRecorderModal').style.display = 'none';
+    }
+
+    async function toggleRecordBioAudio() {
+      const recCircleBtn = document.getElementById('recCircleBtn');
+      const statusText = document.getElementById('recStatusText');
+      const timerText = document.getElementById('recTimerText');
+
+      if (!isBioRecording) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          bioMediaRecorder = new MediaRecorder(stream);
+          bioAudioChunks = [];
+
+          bioMediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) bioAudioChunks.push(e.data); };
+          bioMediaRecorder.onstop = () => {
+            const audioBlob = new Blob(bioAudioChunks, { type: 'audio/webm' });
+            recordedBioBlobUrl = URL.createObjectURL(audioBlob);
+            document.getElementById('saveAudioBioBtn').style.display = 'inline-block';
+            statusText.textContent = "¡Grabación lista! Toca Guardar Audio.";
+            stream.getTracks().forEach(t => t.stop());
+          };
+
+          bioMediaRecorder.start();
+          isBioRecording = true;
+          bioSecondsLeft = 30;
+          recCircleBtn.style.background = '#2e7d32';
+
+          bioRecordTimer = setInterval(() => {
+            bioSecondsLeft--;
+            const elapsed = 30 - bioSecondsLeft;
+            timerText.textContent = `00:${elapsed < 10 ? '0'+elapsed : elapsed} / 00:30`;
+            if (bioSecondsLeft <= 0) toggleRecordBioAudio();
+          }, 1000);
+        } catch (err) { alert('No se pudo acceder al micrófono.'); }
+      } else {
+        clearInterval(bioRecordTimer);
+        if (bioMediaRecorder && bioMediaRecorder.state !== 'inactive') bioMediaRecorder.stop();
+        isBioRecording = false;
+        recCircleBtn.style.background = '#e53935';
+      }
+    }
+
+    function saveBioAudioRecording() {
+      if (recordedBioBlobUrl) {
+        myBioAudioUrl = recordedBioBlobUrl;
+        localStorage.setItem('vix_bio_audio', myBioAudioUrl);
+        document.getElementById('bioAudioLabel').textContent = "REPRODUCIR AUDIO";
+        addSystemMsg("¡Biografía de audio guardada con éxito!");
+      }
+      closeAudioRecorderModal();
+    }
+
+    function toggleRemember() {
+      isRemembered = !isRemembered;
+      document.getElementById('rememberIcon').style.opacity = isRemembered ? '1' : '0.3';
+    }
+
+    function triggerLoginPhotoUpload() { document.getElementById('loginImageInput').click(); }
+
+    function handleLoginImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          myAvatarUrl = e.target.result;
+          document.getElementById('loginAvatarBox').innerHTML = `
+            <img src="${myAvatarUrl}" alt="Avatar">
+            <div class="login-avatar-badge" title="Cambiar foto"><i class="fa-solid fa-camera"></i></div>
+          `;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleLogin() {
+      const userVal = document.getElementById('loginUserInput').value.trim();
+      const bioVal = document.getElementById('loginBioInput').value.trim();
+
+      if (!userVal) {
+        alert("Por favor, ingresa tu nombre de usuario.");
+        return;
+      }
+
+      myUsername = userVal;
+      myBio = bioVal || "Hola, estoy en la sala.";
+
+      if (isRemembered) {
+        localStorage.setItem('vix_username', myUsername);
+        localStorage.setItem('vix_bio', myBio);
+        if (myAvatarUrl) localStorage.setItem('vix_avatar', myAvatarUrl);
+      }
+
+      document.getElementById('profileModalName').textContent = myUsername;
+      document.getElementById('userBioInput').value = myBio;
+      document.getElementById('loginScreen').style.display = 'none';
+
+      if (window.FB && window.FB.conectar) {
+        window.FB.conectar(myUsername, myAvatarUrl, myBio, myUserId);
+      }
+      renderSeats();
+    }
+
+    function logoutRoom() {
+      if (window.FB && window.FB.desconectar) window.FB.desconectar(myUsername);
+      document.getElementById('loginScreen').style.display = 'flex';
+    }
+
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      dropdownMenu.classList.toggle('show');
+    }
+
+    function closeDropdown() { dropdownMenu.classList.remove('show'); }
+    window.addEventListener('click', () => { dropdownMenu.classList.remove('show'); });
+
+    function openBgModal() { document.getElementById('bgModal').style.display = 'flex'; }
+    function closeBgModal() { document.getElementById('bgModal').style.display = 'none'; }
+
+    function setPresetBg(type) {
+      const container = document.getElementById('roomContainer');
+      const gradients = {
+        'gradient-red': 'linear-gradient(180deg, #540909 0%, #6b0d0d 50%, #4d0707 100%)',
+        'gradient-night': 'linear-gradient(180deg, #0d1b2a 0%, #1b263b 50%, #0d1b2a 100%)',
+        'gradient-purple': 'linear-gradient(180deg, #240046 0%, #3c096c 50%, #10002b 100%)',
+        'gradient-ocean': 'linear-gradient(180deg, #03045e 0%, #0077b6 50%, #023e8a 100%)',
+        'gradient-pink': 'linear-gradient(180deg, #2b091e 0%, #7209b7 50%, #1a0524 100%)',
+        'gradient-forest': 'linear-gradient(180deg, #132a13 0%, #31572c 50%, #0b1c0b 100%)',
+        'gradient-sunset': 'linear-gradient(180deg, #370617 0%, #d90429 50%, #2b030d 100%)'
+      };
+      container.style.background = gradients[type] || gradients['gradient-red'];
+      closeBgModal();
+    }
+
+    function triggerCustomBgUpload() {
+      closeBgModal();
+      document.getElementById('customBgInput').click();
+    }
+
+    function handleCustomBgUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('roomContainer').style.background = `url('${e.target.result}') center/cover no-repeat`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function openProfileModal() {
+      closeDropdown();
+      const bannerBox = document.getElementById('profileBannerBox');
+      const coupleBox = document.getElementById('coupleAvatarBox');
+      
+      if (myAvatarUrl) {
+        bannerBox.innerHTML = `<img src="${myAvatarUrl}" alt="Perfil"><div class="profile-add-photo-btn-exact"><i class="fa-solid fa-plus"></i></div>`;
+        coupleBox.innerHTML = `<img src="${myAvatarUrl}" alt="Tú">`;
+      } else {
+        bannerBox.innerHTML = `<i class="fa-solid fa-user"></i><div class="profile-add-photo-btn-exact"><i class="fa-solid fa-plus"></i></div>`;
+        coupleBox.innerHTML = `<i class="fa-solid fa-user"></i>`;
+      }
+      actualizarProgresoNivel();
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+
+    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+
+    function openViewUserModal(username, avatar, bio) {
+      const bannerBox = document.getElementById('viewUserBannerBox');
+      document.getElementById('viewUserName').textContent = username || 'Usuario';
+      document.getElementById('viewUserBio').textContent = bio || 'Sin biografía';
+
+      const coupleBox = document.getElementById('viewUserCoupleBox');
+      if (avatar) {
+        bannerBox.innerHTML = `<img src="${avatar}" alt="${escapeHtml(username)}" style="width:100%; height:100%; object-fit:cover;">`;
+        coupleBox.innerHTML = `<img src="${avatar}" alt="${escapeHtml(username)}" style="width:100%; height:100%; object-fit:cover;">`;
+      } else {
+        bannerBox.innerHTML = `<i class="fa-solid fa-user"></i>`;
+        coupleBox.innerHTML = `<i class="fa-solid fa-user"></i>`;
+      }
+
+      document.getElementById('viewUserSubirAsientoBtn').onclick = () => {
+        let targetSeat = 1;
+        for(let i=1; i<=8; i++) { if (!window.remoteSeats[i]) { targetSeat = i; break; } }
+        if (window.FB && window.FB.actualizarAsientos) window.FB.actualizarAsientos(targetSeat, username, avatar, bio);
+        addSystemMsg(`Has subido a ${username} a la butaca #${targetSeat}.`);
+        closeViewUserModal();
+      };
+
+      document.getElementById('viewUserBajarAsientoBtn').onclick = () => {
+        if (window.FB && window.FB.actualizarAsientos) {
+          for (const k in window.remoteSeats) {
+            if (window.remoteSeats[k] && window.remoteSeats[k].user === username) {
+              window.FB.actualizarAsientos(null, username, avatar, bio);
+              break;
+            }
+          }
+        }
+        addSystemMsg(`Has bajado a ${username} de su butaca.`);
+        closeViewUserModal();
+      };
+
+      document.getElementById('viewUserModal').style.display = 'flex';
+    }
+
+    function closeViewUserModal() { document.getElementById('viewUserModal').style.display = 'none'; }
+
+    function triggerProfileEdit() { document.getElementById('profileImageInput').click(); }
+
+    function handleProfileImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          myAvatarUrl = e.target.result;
+          if (window.FB && window.FB.conectar && myUsername) window.FB.conectar(myUsername, myAvatarUrl, myBio, myUserId);
+          openProfileModal();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function openImageViewer(imgSrc) {
+      document.getElementById('fullImageView').src = imgSrc;
+      document.getElementById('imageViewer').style.display = 'flex';
+    }
+
+    function closeImageViewer() { document.getElementById('imageViewer').style.display = 'none'; }
+
+    function switchOnlineTab(tab) {
+      activeOnlineTab = tab;
+      document.getElementById('tabOnlineAll').classList.toggle('active', tab === 'all');
+      document.getElementById('tabOnlineSeats').classList.toggle('active', tab === 'seats');
+      renderConnectedUsersList();
+    }
+
+    function renderConnectedUsersList() {
+      const listContainer = document.getElementById('connectedUsersList');
+      if (!listContainer) return;
+
+      const rawLista = (window.FB && window.FB.listaConectados && window.FB.listaConectados().length)
+        ? window.FB.listaConectados()
+        : (myUsername ? [{ user: myUsername, avatar: myAvatarUrl, seat: mySeat, bio: myBio, uid: myUserId }] : []);
+
+      const lista = rawLista.map(c => {
+        let seatNum = c.seat || null;
+        if (!seatNum && window.remoteSeats) {
+          for (const k in window.remoteSeats) { if (window.remoteSeats[k] && window.remoteSeats[k].user === c.user) { seatNum = k; break; } }
+        }
+        return { ...c, seat: seatNum };
+      });
+
+      document.getElementById('sheetOnlineCount').textContent = lista.length;
+      const filtered = activeOnlineTab === 'seats' ? lista.filter(c => !!c.seat) : lista;
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `<div style="text-align:center; color:#9ca3af; font-size:13px; padding:28px 10px;">Nadie en esta pestaña todavía.</div>`;
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(c => {
+        const isMe = c.user === myUsername;
+        const avatarSrc = isMe ? (myAvatarUrl || c.avatar) : c.avatar;
+        const avatarHTML = avatarSrc ? `<img src="${avatarSrc}" alt="${escapeHtml(c.user)}">` : `<i class="fa-solid fa-user"></i>`;
+
+        return `
+        <div class="online-user-row">
+          <div class="online-user-left" onclick="openViewUserModal('${escapeHtml(c.user)}', '${avatarSrc || ''}', '${escapeHtml(c.bio || '')}'); closeConnectedModal();">
+            <div class="online-avatar-wrap">
+              <div class="online-avatar-circle">${avatarHTML}</div>
+            </div>
+            <div class="online-user-details">
+              <div class="online-name-line">
+                <span class="name-highlight">${escapeHtml(c.user)}</span>
+                ${c.seat ? `<span style="font-size:11px; color:#ffd573;">• Butaca #${c.seat}</span>` : ''}
+              </div>
+              <div class="online-badges-row">
+                <span class="badge-vip-gold"><i class="fa-solid fa-crown" style="color:#ffd573;"></i> VIP</span>
+              </div>
+            </div>
+          </div>
+          <div class="online-user-right">
+            ${isMe ? '<span style="font-size:11px; color:#ffd573; font-weight:700;">Tú</span>' : ''}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function openConnectedModal() {
+      renderConnectedUsersList();
+      document.getElementById('connectedModal').classList.add('show');
+    }
+
+    function closeConnectedModal() { document.getElementById('connectedModal').classList.remove('show'); }
+
+    function triggerMusicGallery() { document.getElementById('musicGalleryInput').click(); }
+
+    const audioPlayer = document.getElementById('audioPlayer');
+
+    function handleMusicUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          if (window.FB && window.FB.actualizarReproductor) {
+            window.FB.actualizarReproductor({ trackName: file.name, audioUrl: e.target.result, isPlaying: true, currentTime: 0, updatedBy: myUsername, timestamp: Date.now() });
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return "00:00";
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    audioPlayer.addEventListener('timeupdate', () => {
+      document.getElementById('mp3CurrentTime').textContent = formatTime(audioPlayer.currentTime);
+      document.getElementById('mp3TotalDuration').textContent = formatTime(audioPlayer.duration || 0);
+      if (audioPlayer.duration > 0) {
+        document.getElementById('mp3SeekBar').value = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      }
+    });
+
+    function togglePlayPauseRemote() {
+      if (!audioPlayer.src) return;
+      const isPlaying = !audioPlayer.paused;
+      if (window.FB && window.FB.actualizarReproductorEstado) {
+        window.FB.actualizarReproductorEstado({ isPlaying: !isPlaying, currentTime: audioPlayer.currentTime });
+      }
+    }
+
+    function seekAudioRemote(val) {
+      if (!audioPlayer.duration) return;
+      const newTime = (val / 100) * audioPlayer.duration;
+      audioPlayer.currentTime = newTime;
+      if (window.FB && window.FB.actualizarReproductorEstado) {
+        window.FB.actualizarReproductorEstado({ isPlaying: !audioPlayer.paused, currentTime: newTime });
+      }
+    }
+
+    function toggleMinimizeMp3() { document.getElementById('floatingMp3').classList.toggle('minimized'); }
+    function handleMp3ContainerClick() {
+      const player = document.getElementById('floatingMp3');
+      if (player.classList.contains('minimized')) player.classList.remove('minimized');
+    }
+
+    function closeMp3Player() {
+      audioPlayer.pause();
+      audioPlayer.src = '';
+      if (window.FB && window.FB.actualizarReproductor) {
+        window.FB.actualizarReproductor({ trackName: '', audioUrl: '', isPlaying: false, currentTime: 0 });
+      }
+      document.getElementById('floatingMp3').style.display = 'none';
+      document.getElementById('deleteDropZone').classList.remove('active');
+    }
+
+    function initDraggableMp3() {
+      const mp3 = document.getElementById('floatingMp3');
+      const dropZone = document.getElementById('deleteDropZone');
+      let isDragging = false;
+      let startX, startY, initialX, initialY;
+
+      function dragStart(e) {
+        isDragging = true;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        startX = clientX;
+        startY = clientY;
+        const rect = mp3.getBoundingClientRect();
+        initialX = rect.left;
+        initialY = rect.top;
+        mp3.style.transition = 'none';
+        dropZone.classList.add('active');
+        if (e.type === 'touchstart') e.preventDefault();
+      }
+
+      function dragMove(e) {
+        if (!isDragging) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+
+        let newX = initialX + dx;
+        let newY = initialY + dy;
+
+        mp3.style.left = newX + 'px';
+        mp3.style.top = newY + 'px';
+        mp3.style.right = 'auto';
+
+        const dropRect = dropZone.getBoundingClientRect();
+        const mp3Rect = mp3.getBoundingClientRect();
+        if (mp3Rect.bottom >= dropRect.top) {
+          dropZone.style.background = 'rgba(255, 23, 68, 0.98)';
+        } else {
+          dropZone.style.background = 'rgba(229, 57, 53, 0.92)';
+        }
+        if (e.type === 'touchmove') e.preventDefault();
+      }
+
+      function dragEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        dropZone.classList.remove('active');
+        mp3.style.transition = 'all 0.2s ease';
+
+        const dropRect = dropZone.getBoundingClientRect();
+        const mp3Rect = mp3.getBoundingClientRect();
+
+        if (mp3Rect.bottom >= dropRect.top) {
+          closeMp3Player();
+        }
+      }
+
+      mp3.addEventListener('mousedown', dragStart);
+      window.addEventListener('mousemove', dragMove);
+      window.addEventListener('mouseup', dragEnd);
+
+      mp3.addEventListener('touchstart', dragStart, { passive: false });
+      window.addEventListener('touchmove', dragMove, { passive: false });
+      window.addEventListener('touchend', dragEnd);
+    }
+
+    function openYtModal() { document.getElementById('ytModal').style.display = 'flex'; }
+    function closeYtModal() { document.getElementById('ytModal').style.display = 'none'; }
+
+    function loadVideoUrl() {
+      const url = document.getElementById('ytUrlInput').value.trim();
+      if (!url) return;
+      const iframe = document.getElementById('ytPlayer');
+      document.getElementById('projectorPlaceholder').style.display = 'none';
+      iframe.style.display = 'block';
+
+      const ytMatch = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11}).*/);
+      iframe.src = (ytMatch && ytMatch[1]) ? `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1` : url;
+      document.getElementById('searchPill').style.display = 'none';
+      closeYtModal();
+    }
+
+    function triggerChatImageUpload() {
+      closeDropdown();
+      document.getElementById('chatImageInput').click();
+    }
+
+    function handleChatImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          if (window.FB && window.FB.enviarImagen) {
+            window.FB.enviarImagen(myUsername, e.target.result, mySeat, myAvatarUrl);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function renderSeats() {
+      seatsGrid.innerHTML = '';
+      for (let i = 1; i <= 8; i++) {
+        const remote = (window.remoteSeats || {})[i];
+        const isMine = mySeat === i;
+        const occupied = isMine || !!(remote && remote.user);
+        const occUser = isMine ? myUsername : (remote ? remote.user : null);
+        const occAvatar = isMine ? myAvatarUrl : (remote ? remote.avatar : null);
+        const occBio = isMine ? myBio : (remote ? remote.bio : null);
+
+        const card = document.createElement('div');
+        card.className = 'seat-card';
+        card.onclick = () => {
+          if (isMine) openProfileModal();
+          else if (occupied) openViewUserModal(occUser, occAvatar, occBio);
+          else toggleSeat(i);
+        };
+
+        let ringContent = occAvatar ? `<img src="${occAvatar}" alt="${escapeHtml(occUser)}">` : (occupied ? '<i class="fa-solid fa-user" style="color:#2ce68a;"></i>' : '<i class="fa-solid fa-couch"></i>');
+        let labelText = occupied ? `<span class="shiny-animated">${escapeHtml(occUser)}</span>` : i;
+
+        card.innerHTML = `<div class="seat-ring">${ringContent}</div><div class="seat-base">${labelText}</div>`;
+        seatsGrid.appendChild(card);
+      }
+    }
+
+    function toggleSeat(num) {
+      if (mySeat === num) {
+        mySeat = null;
+        addSystemMsg(`Bajaste de la butaca ${num}.`);
+      } else {
+        mySeat = num;
+        addSystemMsg(`Subiste a la butaca ${num}.`);
+      }
+      if (window.FB) window.FB.actualizarAsientos(mySeat, myUsername, myAvatarUrl, myBio);
+      renderSeats();
+    }
+
+    function clearSeats() {
+      mySeat = null;
+      if (window.FB) window.FB.vaciarAsientos();
+      renderSeats();
+    }
+
+    function sendMessage() {
+      const text = msgInput.value.trim();
+      if (!text) return;
+
+      myMsgCount++;
+      localStorage.setItem('vix_msg_count', myMsgCount);
+      actualizarProgresoNivel();
+
+      if (window.FB) {
+        window.FB.enviarMensaje(myUsername, text, mySeat, myAvatarUrl, myBio);
+        window.FB.actualizarEscribiendo(myUsername, false);
+        msgInput.value = '';
+      }
+    }
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+
+    async function toggleMic() {
+      const micBtn = document.getElementById('micBtn');
+      if (!isRecording) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = (event) => { if (event.data.size > 0) audioChunks.push(event.data); };
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              if (window.FB && window.FB.enviarAudio) {
+                await window.FB.enviarAudio(myUsername, reader.result, mySeat, myAvatarUrl, myBio);
+              }
+            };
+            reader.readAsDataURL(audioBlob);
+            stream.getTracks().forEach(track => track.stop());
+          };
+
+          mediaRecorder.start();
+          isRecording = true;
+          micBtn.classList.add('recording');
+        } catch (err) { alert('No se pudo acceder al micrófono.'); }
+      } else {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+        isRecording = false;
+        micBtn.classList.remove('recording');
+      }
+    }
+
+    function addSystemMsg(text) {
+      const div = document.createElement('div');
+      div.className = 'msg-system';
+      div.textContent = text;
+      chatMessages.appendChild(div);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function clearChat() { if (window.FB) window.FB.limpiarChat(myUsername); }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    renderSeats();
+  </script>
+
+  <!-- FIREBASE TIEMPO REAL -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, limit, doc, setDoc, deleteDoc, getDoc }
+      from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA6ahBrWtcop7ZEMOQbYZOvdqAzX5iwiIk",
+      authDomain: "sala-vip-javiib-2027.firebaseapp.com",
+      projectId: "sala-vip-javiib-2027",
+      storageBucket: "sala-vip-javiib-2027.firebasestorage.app",
+      messagingSenderId: "1033332887126",
+      appId: "1:1033332887126:web:b262012748e2f9d14475f7",
+      measurementId: "G-80Q33N2WX7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let miUsuario = null;
+    let miAvatarCache = null;
+    let miBioCache = '';
+    let miUidCache = '';
+    let chatClearTime = 0;
+    let lastClearedBy = '';
+    let prevActiveUsers = new Set();
+    let isInitialLoad = true;
+
+    const audioPlayer = document.getElementById('audioPlayer');
+    const floatingMp3 = document.getElementById('floatingMp3');
+
+    onSnapshot(doc(db, 'sala', 'reproductor'), (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        if (data.audioUrl) {
+          floatingMp3.style.display = 'flex';
+          document.getElementById('mp3TrackName').textContent = data.trackName || 'Pista de audio';
+          if (audioPlayer.src !== data.audioUrl) {
+            audioPlayer.src = data.audioUrl;
+            audioPlayer.currentTime = data.currentTime || 0;
+          }
+          if (data.isPlaying) audioPlayer.play().catch(e => {});
+          else audioPlayer.pause();
+        } else {
+          floatingMp3.style.display = 'none';
+          audioPlayer.pause();
+          audioPlayer.src = '';
+        }
+      }
+    });
+
+    async function actualizarReproductor(payload) {
+      try { await setDoc(doc(db, 'sala', 'reproductor'), payload); } catch (e) {}
+    }
+
+    async function actualizarReproductorEstado(payload) {
+      try {
+        await setDoc(doc(db, 'sala', 'reproductor'), {
+          isPlaying: payload.isPlaying,
+          currentTime: payload.currentTime,
+          updatedBy: miUsuario,
+          timestamp: Date.now()
+        }, { merge: true });
+      } catch (e) {}
+    }
+
+    onSnapshot(doc(db, 'sala', 'chatState'), (snap) => {
+      if (snap.exists()) {
+        const data = snap.data();
+        chatClearTime = data.clearTimestamp || 0;
+        lastClearedBy = data.clearedBy || '';
+        renderizarChatCompleto();
+      }
+    });
+
+    let ultimosDocumentos = [];
+    onSnapshot(query(collection(db, 'mensajes'), orderBy('ts', 'desc'), limit(150)), (snap) => {
+      ultimosDocumentos = snap.docs;
+      renderizarChatCompleto();
+    });
+
+    function renderizarChatCompleto() {
+      chatMessages.innerHTML = '';
+      if (chatClearTime > 0) {
+        const div = document.createElement('div');
+        div.className = 'msg-clear';
+        div.innerHTML = `🧹 <span class="shiny-celeste-animated">${escapeHtml(lastClearedBy || 'Alguien')}</span> limpió el chat.`;
+        chatMessages.appendChild(div);
+      }
+
+      ultimosDocumentos.slice().reverse().forEach((d) => {
+        const m = d.data();
+        if (m.ts <= chatClearTime) return;
+        if (m.tipo === 'bienvenida') pintarBienvenida(m.user);
+        else if (m.tipo === 'salida') pintarSalida(m.user);
+        else pintarMensajeChat(m);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function avatarHTML(user, avatar) {
+      return avatar ? `<img src="${avatar}" alt="${escapeHtml(user)}">` : '<i class="fa-solid fa-user"></i>';
+    }
+
+    function pintarMensajeChat(m) {
+      const div = document.createElement('div');
+      div.className = 'msg-item';
+      div.onclick = () => openViewUserModal(m.user, m.avatar, m.bio || '');
+
+      let contentHTML = '';
+      if (m.tipo === 'imagen') {
+        contentHTML = `<img src="${m.imgUrl}" alt="Foto" onclick="event.stopPropagation(); openImageViewer('${m.imgUrl}')">`;
+      } else if (m.tipo === 'audio') {
+        contentHTML = `<audio controls src="${m.audioUrl}"></audio>`;
+      } else {
+        contentHTML = `<div>${escapeHtml(m.text)}</div>`;
+      }
+
+      div.innerHTML = `
+        <div class="msg-avatar">${avatarHTML(m.user, m.avatar)}</div>
+        <div class="msg-bubble">
+          <div class="msg-author shiny-animated">${escapeHtml(m.user)}</div>
+          ${contentHTML}
+        </div>
+      `;
+      chatMessages.appendChild(div);
+    }
+
+    function pintarBienvenida(user) {
+      const div = document.createElement('div');
+      div.className = 'welcome-banner';
+      div.innerHTML = `<span class="welcome-lightning">⚡</span> El usuario <span class="welcome-user">${escapeHtml(user)}</span> entró a sala <span class="welcome-lightning">⚡</span>`;
+      chatMessages.appendChild(div);
+    }
+
+    function pintarSalida(user) {
+      const div = document.createElement('div');
+      div.className = 'msg-clear';
+      div.style.color = '#ff8a80';
+      div.innerHTML = `🚪 El usuario <span style="font-weight:700; color:#ff5252;">${escapeHtml(user)}</span> se salió de sala.`;
+      chatMessages.appendChild(div);
+    }
+
+    async function enviarMensaje(user, text, seat, avatar, bio) {
+      try { await addDoc(collection(db, 'mensajes'), { tipo: 'msg', user, text, seat: seat || null, avatar: avatar || null, bio: bio || '', ts: Date.now() }); } catch (e) {}
+    }
+    async function enviarImagen(user, imgUrl, seat, avatar) {
+      try { await addDoc(collection(db, 'mensajes'), { tipo: 'imagen', user, imgUrl, seat: seat || null, avatar: avatar || null, ts: Date.now() }); } catch (e) {}
+    }
+    async function enviarAudio(user, audioUrl, seat, avatar) {
+      try { await addDoc(collection(db, 'mensajes'), { tipo: 'audio', user, audioUrl, seat: seat || null, avatar: avatar || null, ts: Date.now() }); } catch (e) {}
+    }
+    async function registrarEntrada(user) {
+      try { await addDoc(collection(db, 'mensajes'), { tipo: 'bienvenida', user, ts: Date.now() }); } catch (e) {}
+    }
+    async function registrarSalida(user) {
+      try { await addDoc(collection(db, 'mensajes'), { tipo: 'salida', user, ts: Date.now() }); } catch (e) {}
+    }
+    async function limpiarChat(user) {
+      try { await setDoc(doc(db, 'sala', 'chatState'), { clearTimestamp: Date.now(), clearedBy: user }); } catch (e) {}
+    }
+
+    let conectadosCache = [];
+    onSnapshot(collection(db, 'conectados'), (snap) => {
+      const activosMap = new Map();
+      const currentActiveUsers = new Set();
+
+      const AHORA = Date.now();
+      snap.forEach((d) => {
+        const data = d.data();
+        // Si el ts tiene mas de 25 segundos sin latido, se considera que ya salio:
+        // asi el contador baja solo aunque el navegador no avise al cerrar.
+        if (!data.ts || (AHORA - data.ts) > 25000) return;
+        activosMap.set(data.uid || data.user, data);
+        currentActiveUsers.add(data.user);
+      });
+
+      if (miUsuario) {
+        activosMap.set(miUidCache || miUsuario, { user: miUsuario, avatar: miAvatarCache, bio: miBioCache, uid: miUidCache, seat: mySeat, ts: Date.now() });
+        currentActiveUsers.add(miUsuario);
+      }
+
+      if (!isInitialLoad) {
+        for (let oldUser of prevActiveUsers) {
+          if (!currentActiveUsers.has(oldUser)) {
+            registrarSalida(oldUser);
+          }
+        }
+      }
+      isInitialLoad = false;
+      prevActiveUsers = currentActiveUsers;
+
+      conectadosCache = Array.from(activosMap.values());
+      document.getElementById('onlineCount').textContent = conectadosCache.length;
+      document.getElementById('menuCount').textContent = conectadosCache.length;
+
+      // TIRA DE AVATARES FIJOS EN TIEMPO REAL ARRIBA A LA IZQUIERDA
+      const strip = document.getElementById('topLeftAvatarsStrip');
+      if (strip) {
+        if (conectadosCache.length === 0) {
+          strip.innerHTML = `<div class="top-mini-avatar" onclick="openProfileModal()"><i class="fa-solid fa-user"></i></div>`;
+        } else {
+          strip.innerHTML = conectadosCache.map(c => {
+            const avatarContent = c.avatar ? `<img src="${c.avatar}" alt="${escapeHtml(c.user)}">` : `<i class="fa-solid fa-user"></i>`;
+            return `<div class="top-mini-avatar" title="${escapeHtml(c.user)}" onclick="openViewUserModal('${escapeHtml(c.user)}', '${c.avatar || ''}', '${escapeHtml(c.bio || '')}')">${avatarContent}</div>`;
+          }).join('');
+        }
+      }
+
+      if (document.getElementById('connectedModal').classList.contains('show')) renderConnectedUsersList();
+    });
+
+    let heartbeatInterval = null;
+
+    // Latido cada 8 segundos: mantiene vivo al usuario en la lista aunque
+    // el navegador no ejecute beforeunload (celulares, pestaña cerrada de golpe)
+    function iniciarHeartbeat() {
+      clearInterval(heartbeatInterval);
+      heartbeatInterval = setInterval(async () => {
+        if (!miUsuario) return;
+        try {
+          await setDoc(doc(db, 'conectados', miUidCache || miUsuario),
+            { user: miUsuario, avatar: miAvatarCache, bio: miBioCache, uid: miUidCache, seat: mySeat, ts: Date.now() });
+        } catch (e) {}
+      }, 8000);
+    }
+
+    async function conectar(user, avatar, bio, uid) {
+      miUsuario = user;
+      miAvatarCache = avatar;
+      miBioCache = bio;
+      miUidCache = uid;
+
+      try {
+        await setDoc(doc(db, 'conectados', uid || user), { user, avatar, bio, uid, seat: mySeat, ts: Date.now() });
+        await registrarEntrada(user);
+        iniciarHeartbeat();
+      } catch (e) {}
+    }
+
+    async function desconectar(user) {
+      clearInterval(heartbeatInterval);
+      try {
+        await deleteDoc(doc(db, 'conectados', miUidCache || user));
+        await registrarSalida(user);
+      } catch (e) {}
+      miUsuario = null;
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (miUsuario) {
+        try { 
+          deleteDoc(doc(db, 'conectados', miUidCache || miUsuario)); 
+          registrarSalida(myUsername);
+        } catch(e){}
+      }
+    });
+
+    function listaConectados() { return conectadosCache; }
+
+    onSnapshot(doc(db, 'sala', 'escribiendo'), (snap) => {
+      const typingBar = document.getElementById('typingBar');
+      if (snap.exists()) {
+        const data = snap.data();
+        const activeTypers = Object.entries(data).filter(([user, info]) => info.typing && user !== miUsuario && (Date.now() - info.ts) < 4000);
+        if (activeTypers.length > 0) {
+          const names = activeTypers.map(([user]) => user).join(', ');
+          document.getElementById('typingUserName').textContent = names;
+          typingBar.style.display = 'flex';
+        } else {
+          typingBar.style.display = 'none';
+        }
+      } else {
+        typingBar.style.display = 'none';
+      }
+    });
+
+    async function actualizarEscribiendo(user, isTyping) {
+      try {
+        await setDoc(doc(db, 'sala', 'escribiendo'), {
+          [user]: { typing: isTyping, ts: Date.now() }
+        }, { merge: true });
+      } catch (e) {}
+    }
+
+    onSnapshot(doc(db, 'sala', 'asientos'), (snap) => {
+      window.remoteSeats = snap.exists() ? (snap.data().mapa || {}) : {};
+      renderSeats();
+    });
+
+    async function actualizarAsientos(seatNum, user, avatar, bio) {
+      try {
+        const ref = doc(db, 'sala', 'asientos');
+        const snap = await getDoc(ref);
+        const mapa = snap.exists() ? (snap.data().mapa || {}) : {};
+        for (const k in mapa) { if (mapa[k] && mapa[k].user === user) delete mapa[k]; }
+        if (seatNum) mapa[seatNum] = { user, avatar, bio };
+        await setDoc(ref, { mapa });
+      } catch (e) {}
+    }
+
+    async function vaciarAsientos() {
+      try { await setDoc(doc(db, 'sala', 'asientos'), { mapa: {} }); } catch (e) {}
+    }
+
+    window.FB = { 
+      enviarMensaje, enviarImagen, enviarAudio, registrarEntrada, registrarSalida, limpiarChat, conectar, desconectar, 
+      actualizarAsientos, vaciarAsientos, listaConectados, actualizarReproductor, actualizarReproductorEstado,
+      actualizarEscribiendo
+    };
+  </script>
+</body>
+</html>
